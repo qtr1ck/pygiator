@@ -1,2 +1,2 @@
-# Pygiator
+# Pygiator {#mainpage}
 - Introduction
