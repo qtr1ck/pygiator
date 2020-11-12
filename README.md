@@ -1,2 +1,2 @@
-# plagiat_scanner
+# Plagiat Scanner for Python Source Code
 Introduction
