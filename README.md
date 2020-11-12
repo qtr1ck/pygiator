@@ -1,5 +1,5 @@
 # Pygiator
 ## Overview
-In the course "Scripting Languages" we have to develop a plagiat scanner for python scripts. 
-It have to be developed in python and should be implemented as an desktop or web application. 
-Furthermore, a logo is also necessary, therefor the turtle module should be used.
+In the course "Scripting Languages" we have to develop a plagiarism scanner for python scripts. 
+It must be developed in python and ultimately be available as a desktop or web application.
+A logo is also required and the turtle module should be use for this.
