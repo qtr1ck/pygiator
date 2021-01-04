@@ -4,6 +4,7 @@ from statistics import mean
 from levensthein import lvs_distance
 from categories import get_category
 import numpy as np
+import copy
 
 # Hold tokens for a single block within own class instance
 class Block(object):
@@ -75,11 +76,13 @@ class Block(object):
 
 # Represent a files source code as tokens, also implements similarity check
 class Code:
-    def __init__(self, filename):
+    def __init__(self, text):
         self._blocks = []
         self._max_row = 0
         self._max_col = 0
-        self.__tokenize(filename) # Generatore tokens from file
+        #self.__tokenize(filename) # Generatore tokens from file
+        self.__tokenizeFromText(text)
+
     
     @property
     def blocks(self):
@@ -94,6 +97,10 @@ class Code:
         file = open(filename, "r")
         text = file.read()
         file.close()
+        self.__tokenizeFromText(text)
+        
+
+    def __tokenizeFromText(self, text):
         lexer = PythonLexer() # Using pygments Python Lexer
         tokens = lexer.get_tokens(text)
         tokens = list(tokens) # Convert to tokens to list object
@@ -170,6 +177,7 @@ class Code:
     # Find exact matches using stringcompare and annotate
     def __pre_process(self, other):
         other_blocks = other.blocks
+        #other_blocks = copy.deepcopy(other.blocks)
         for block_a in self.blocks:
             for j,block_b in enumerate(other_blocks):
                 if block_a.similarity == 1:
@@ -194,7 +202,7 @@ class Code:
                             index_best = j
                 block_a.similarity = best_score
                 if best_score > 0:
-                    other.blocks[index_best].compared = True
+                   other.blocks[index_best].compared = True
 
     # Calculate similarity score
     def __calculateSimScore(self):

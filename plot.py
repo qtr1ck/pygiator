@@ -65,4 +65,5 @@ def draw_plot(code_a, code_b):
 
     fig.update_layout(sliders=sliders)
 
-    fig.show()
+    #fig.show()
+    return fig

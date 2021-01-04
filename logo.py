@@ -7,6 +7,8 @@
 ##                                                                            ##
 ################################################################################
 
+from tkinter import *
+from turtle import *
 import turtle as t
 
 def plotDiamond(n, size, degree):
@@ -161,4 +163,6 @@ def plotLogo(size):
     t.ht()
 
 plotLogo(10)
-t.Screen().exitonclick()
+
+ts = t.getscreen()
+ts.getcanvas().postscript(file="duck.svg")
