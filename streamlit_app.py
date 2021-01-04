@@ -23,20 +23,28 @@ def fileSelect():
 
   return files
 
+def showResult(c1, c2):
+  st.write(c1.similarity(c2))
+  st.plotly_chart(draw_plot(c1, c2), use_container_width=True)
+
+
 def run_app():
   files = fileSelect()
+  select = st.sidebar.radio('Compare direction', ('First -> Second', 'Second -> First'))
   st.title("Plagiat Scanner for Python Source Code")
-  if(st.sidebar.button('Enter')):
+  if st.sidebar.button('Enter'):
     if None in files or '' in files:
       st.error('Please enter two scripts or refer to two python files.')
     else:
       fileOne = files[0].read().decode(errors='ignore')
       fileTwo = files[1].read().decode(errors='ignore')
+      if select == 'Second -> First':
+        fileOne, fileTwo = fileTwo, fileOne
 
       c1 = Code(fileOne)
       c2 = Code(fileTwo)
-      st.write(c1.similarity(c2))
-      st.plotly_chart(draw_plot(c1, c2))
+      showResult(c1, c2)
+
 
   else:
     st.write("Enter the source file paths in the sidebar.")
