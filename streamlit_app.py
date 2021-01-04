@@ -24,14 +24,18 @@ def fileSelect():
   return files
 
 def showResult(c1, c2):
-  st.write(c1.similarity(c2))
-  st.plotly_chart(draw_plot(c1, c2), use_container_width=True)
+  st.write('Similarity: ' + str(c1.similarity(c2)))
+  plotHeight = max([len(c1), len(c2)]) * 10
+  st.plotly_chart(draw_plot(c1, c2).update_layout(height=plotHeight))
 
 
 def run_app():
+  st.set_page_config('Pygiator', layout='centered', page_icon=':shark:')
   files = fileSelect()
   select = st.sidebar.radio('Compare direction', ('First -> Second', 'Second -> First'))
+
   st.title("Plagiat Scanner for Python Source Code")
+
   if st.sidebar.button('Enter'):
     if None in files or '' in files:
       st.error('Please enter two scripts or refer to two python files.')

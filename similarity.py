@@ -227,3 +227,6 @@ class Code:
         self.__pre_process(other)           # Do preprocessing step finding exact matches
         self.__process_similarity(other)    # Compare remaining blocks using levensthein distance on token categories
         return self.__calculateSimScore()
+
+    def __len__(self):
+        return self._max_row

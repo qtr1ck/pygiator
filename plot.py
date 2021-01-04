@@ -56,15 +56,13 @@ def draw_plot(code_a, code_b):
                 ]),
                 pad={"r": 10, "t": 10},
                 showactive=True,
-                x=0.1,
+                x=0,
                 xanchor="left",
-                y=-1,
+                y=-0.15,
                 yanchor="top"
             ),
         ]
     )
-
-
 
     #fig.show()
     return fig
