@@ -45,8 +45,7 @@ def draw_plot(code_a, code_b, filename_A = "Code A", filename_B = "Code B"):
     s = sim_marker()
 
     trace_a_sim = go.Heatmap(z=data_a_sim, name=filename_A, visible=False, showscale=False, colorscale=s.get_map(),
-                            opacity=0.8,
-                             hovertemplate='Similarity: %{z}\'<extra></extra>') 
+                            opacity=0.8, hovertemplate='Similarity: %{z}\'<extra></extra>')
     fig.append_trace(trace_a_sim, 1, 1)
 
     fig.update_yaxes(title_text="Row", autorange="reversed", row=1, col=1)

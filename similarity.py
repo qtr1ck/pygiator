@@ -10,7 +10,7 @@ import copy
 class Block(object):
     def __init__(self, tokens, similarity = 0, compared = False):
         self._similarity = similarity
-        self._compared = compared
+        #self._compared = compared
         self._tokens = tokens
 
     @property
@@ -21,13 +21,13 @@ class Block(object):
     def similarity(self, s):
         self._similarity = s
     
-    @property
-    def compared(self):
-        return self._compared
+    # @property
+    # def compared(self):
+    #     return self._compared
 
-    @compared.setter
-    def compared(self, v):
-        self._compared = v
+    # @compared.setter
+    # def compared(self, v):
+    #     self._compared = v
 
     @property
     def tokens(self):
@@ -36,12 +36,7 @@ class Block(object):
 
     # OPERATOR OVERLOADS:
     #---------------------------------------------------------------------------
-    # TODO: WHICH LEN TO RETURN?????
     def __len__(self):
-        #total_len = 0
-        #for t in self.tokens:
-            #total_len += len(t[3])
-        #return total_len
         return len(self.tokens)
 
     def __str__(self):
@@ -177,32 +172,30 @@ class Code:
     # Find exact matches using stringcompare and annotate
     def __pre_process(self, other):
         other_blocks = other.blocks
-        #other_blocks = copy.deepcopy(other.blocks)
         for block_a in self.blocks:
             for j,block_b in enumerate(other_blocks):
                 if block_a.similarity == 1:
                     break
-                if not block_b.compared:
-                    if block_a.clnstr() == block_b.clnstr():
-                        block_a.similarity = 1.0
-                        other_blocks[j].compared = True
+                #if not block_b.compared:
+                if block_a.clnstr() == block_b.clnstr():
+                    block_a.similarity = 1.0
+                    other_blocks[j].compared = True
 
-    # TODO: FIND A BETTER METHOD BACKTRACKING??
-    # TODO: use difflib get_close_matches ??
     def __process_similarity(self, other):
         for block_a in self.blocks:
-            if block_a.similarity < 1:
+            # Only do levenshtein compare for more complex blocks
+            if block_a.similarity < 1 and len(block_a) > 8:
                 best_score = 0
-                index_best = 0
-                for j,block_b in enumerate(other.blocks):
-                    if not block_b.compared:
-                        score = block_a.compare(block_b)
-                        if score > best_score:
-                            best_score = score
-                            index_best = j
+                #index_best = 0
+                for block_b in other.blocks:
+                    #if not block_b.compared:
+                    score = block_a.compare(block_b)
+                    if score > best_score:
+                        best_score = score
+                        #index_best = j
                 block_a.similarity = best_score
-                if best_score > 0:
-                   other.blocks[index_best].compared = True
+                #if best_score > 0:
+                   #other.blocks[index_best].compared = True
 
     # Calculate similarity score
     def __calculateSimScore(self):
@@ -213,16 +206,9 @@ class Code:
             len_plagiat += len(block) * block.similarity
         return round((len_plagiat/total_len),2)
 
-        #Using mean of block similarity:
-        #similarity_list = []
-        #for block in self.blocks:
-        #    similarity_list.append(block.similarity)
-        #return round((mean(similarity_list)),2)
-
-
     # Return similarity 
     def similarity(self, other):
-        other._setUncompared()
+        #other._setUncompared()
 
         self.__pre_process(other)           # Do preprocessing step finding exact matches
         self.__process_similarity(other)    # Compare remaining blocks using levensthein distance on token categories
