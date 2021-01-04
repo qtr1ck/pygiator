@@ -42,8 +42,6 @@ def run_app():
       flag = True
       fileOne = files[0].read().decode(errors='ignore')
       fileTwo = files[1].read().decode(errors='ignore')
-      if select == 'Second -> First':
-        fileOne, fileTwo = fileTwo, fileOne
 
       c1 = Code(fileOne)
       c2 = Code(fileTwo)

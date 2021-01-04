@@ -1,5 +1,6 @@
 # Example - Draw a plot using plotly
 from plotly.subplots import make_subplots
+from categories import get_cmap
 import plotly.graph_objects as go
 import numpy as np
 
@@ -14,11 +15,11 @@ def draw_plot(code_a, code_b):
     labels_b = code_b.get_clnstr_array()
 
     trace_a = go.Heatmap(
-        z=data_a, text=labels_a, name="Code A", showscale=False,
+        z=data_a, text=labels_a, name="Code A", showscale=False, colorscale=get_cmap(),
         hovertemplate='Row: %{y}<br>Column: %{x}<br>String: \'%{text}\'<extra></extra>')
 
     trace_b = go.Heatmap(
-        z=data_b, text=labels_b, name="Code B", showscale=False,
+        z=data_b, text=labels_b, name="Code B", showscale=False, colorscale=get_cmap(),
         hovertemplate='Row: %{y}<br>Column: %{x}<br>String: \'%{text}\'<extra></extra>')
 
     fig = make_subplots(rows=1, cols=2)
