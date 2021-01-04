@@ -35,3 +35,26 @@ def get_category(t):
         category = None # Comments and other tokens
 
     return category
+
+
+def get_cmap():
+    return [
+        (0.0, "rgb(0, 0, 0)"),
+        (0.5, "rgb(20, 20, 20)"),
+        (1.0, "rgb(50, 0, 0)"),
+    ]
+
+def get_cmap2():
+    return [
+        (ord('0'), "rgb(0, 0, 0)"),
+        (ord('F'), "rgb(20, 20, 20)"),
+        (ord('V'), "rgb(20, 20, 20)"),
+        (ord('B'), "rgb(0, 0, 0)"),
+        (ord('N'), "rgb(0, 0, 0)" ),
+        (ord('S'), "rgb(0, 0, 0)"),
+        (ord('K'), "rgb(0, 0, 0)"),
+        (ord('I'), "rgb(0, 0, 0)"),
+        (ord('W'), "rgb(0, 0, 0)"),
+        (ord('C'), "rgb(0, 0, 0)"),
+        (ord('L'), "rgb(0, 0, 0)")
+    ]
