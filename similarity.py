@@ -4,7 +4,6 @@ from statistics import mean
 from levensthein import lvs_distance
 from categories import get_category
 import numpy as np
-import copy
 
 # Hold tokens for a single block within own class instance
 class Block(object):
