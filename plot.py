@@ -18,7 +18,7 @@ class sim_marker():
 
 
 
-def draw_plot(code_a, code_b, filename_A = "Code A", filename_B = "Code B"):
+def draw_plot(code_a, code_b, sim_marker, filename_A = "Code A", filename_B = "Code B"):
     fig = go.Figure()
 
     data_a = code_a.get_ctg_array()
@@ -42,9 +42,9 @@ def draw_plot(code_a, code_b, filename_A = "Code A", filename_B = "Code B"):
 
     data_a_sim = code_a.get_sim_array()
 
-    s = sim_marker()
+    s = sim_marker
 
-    trace_a_sim = go.Heatmap(z=data_a_sim, name=filename_A, visible=False, showscale=False, colorscale=s.get_map(),
+    trace_a_sim = go.Heatmap(z=data_a_sim, name=filename_A, visible=True, showscale=False, colorscale=s.get_map(),
                             opacity=0.8,
                              hovertemplate='Similarity: %{z}\'<extra></extra>') 
     fig.append_trace(trace_a_sim, 1, 1)
@@ -54,34 +54,4 @@ def draw_plot(code_a, code_b, filename_A = "Code A", filename_B = "Code B"):
     fig.update_xaxes(title_text="Column", row=1, col=1)
     fig.update_xaxes(title_text="Column", row=1, col=2)
 
-
-    # Add dropdown to switch visibility
-    fig.update_layout(
-        updatemenus=[
-            dict(
-                type = "buttons",
-                direction = "left",
-                buttons=list([
-                    dict(
-                        args=[{'visible': [True, True, False]}],
-                        label="Show original",
-                        method="restyle"
-                    ),
-                    dict(
-                        args=[{'visible': [False, True, True]}],
-                        label="Show similarity",
-                        method="restyle"
-                    )
-                ]),
-                pad={"r": 10, "t": 10},
-                showactive=True,
-                x=0,
-                xanchor="left",
-                y=-0.15,
-                yanchor="top"
-            ),
-        ]
-    )
-
-    #fig.show()
     return fig

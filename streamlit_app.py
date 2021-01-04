@@ -3,7 +3,7 @@ import base64
 from PIL import Image
 from io import StringIO
 from similarity import Code
-from plot import draw_plot
+from plot import draw_plot, sim_marker
     
 def renderSvg(svg):
     """Renders the given svg string."""
@@ -26,34 +26,39 @@ def fileSelect():
 def showResult(c1, c2):
   st.write('Similarity: ' + str(c1.similarity(c2)))
   plotHeight = max([len(c1), len(c2)]) * 10
-  st.plotly_chart(draw_plot(c1, c2).update_layout(height=plotHeight, width=850))
+  s = sim_marker()
+  a = st.sidebar.slider("Select similarity threshold", value=90, min_value=1)
+  s.set_threshold(a / 100)
+  st.plotly_chart(draw_plot(c1, c2, s).update_layout(height=plotHeight, width=850))
+
+@st.cache(allow_output_mutation=True, suppress_st_warning=True)
+def computeCode(files):
+  if None in files:
+    return 0,0
+  fileOne = files[0].read().decode(errors='ignore')
+  fileTwo = files[1].read().decode(errors='ignore')
+
+  c1 = Code(fileOne)
+  c2 = Code(fileTwo)
+  return c1, c2 
 
 def run_app():
-  st.set_page_config('Pygiator', layout='centered', page_icon=':shark:')
+  st.set_page_config('Pygiator', layout='centered')
   files = fileSelect()
-  select = st.sidebar.radio('Compare direction', ('First -> Second', 'Second -> First'))
-  
   st.title("Plagiat Scanner for Python Source Code")
 
-  if st.sidebar.button('Enter'):
-    if None in files or '' in files:
-      st.error('Please enter two scripts or refer to two python files.')
-    else:
-      flag = True
-      fileOne = files[0].read().decode(errors='ignore')
-      fileTwo = files[1].read().decode(errors='ignore')
-      if select == 'Second -> First':
-        fileOne, fileTwo = fileTwo, fileOne
+  c1, c2 = computeCode(files)
 
-      c1 = Code(fileOne)
-      c2 = Code(fileTwo)
-      showResult(c1, c2)
-
+  if 0 not in [c1, c2]:
+    if st.checkbox("Swap Scripts"):
+      c1, c2 = c2, c1
+    showResult(c1, c2)
   else:
     st.write("Enter the source file paths in the sidebar.")
     logo = open('logo.svg')
     source = logo.read()
     st.write(renderSvg(source), unsafe_allow_html=True)
 
+  
 
 run_app()
