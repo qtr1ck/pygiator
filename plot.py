@@ -27,43 +27,44 @@ def draw_plot(code_a, code_b):
     fig.append_trace(trace_b, 1, 2)
 
     data_a_sim = code_a.get_sim_array()
-    # Add traces for slider steps
-    for step in np.arange(0, 1, 0.1):
-        trace_a_sim = go.Heatmap(z=data_a_sim, visible=False, showscale=False,
-        hoverinfo='skip', colorscale='Bluered', opacity=step)
-        fig.append_trace(trace_a_sim, 1, 1)
 
+    trace_a_sim = go.Heatmap(z=data_a_sim, visible=False, showscale=False,hoverinfo='skip', colorscale='Bluered', opacity=0.8) 
+    fig.append_trace(trace_a_sim, 1, 1)
 
     fig.update_yaxes(title_text="Row", autorange="reversed", row=1, col=1)
     fig.update_yaxes(title_text="Row", autorange="reversed", row=1, col=2)
     fig.update_xaxes(title_text="Column", row=1, col=1)
     fig.update_xaxes(title_text="Column", row=1, col=2)
 
+    # Add dropdown to switch visibility
+    fig.update_layout(
+        updatemenus=[
+            dict(
+                type = "buttons",
+                direction = "left",
+                buttons=list([
+                    dict(
+                        args=[{'visible': [True, True, False]}],
+                        label="Show original",
+                        method="restyle"
+                    ),
+                    dict(
+                        args=[{'visible': [True, True, True]}],
+                        label="Show similarity",
+                        method="restyle"
+                    )
+                ]),
+                pad={"r": 10, "t": 10},
+                showactive=True,
+                x=0.1,
+                xanchor="left",
+                y=-1,
+                yanchor="top"
+            ),
+        ]
+    )
 
-    # Create and add slider
-    steps = []
 
-
-    for i in range(len(fig.data)-2):
-        step = dict(
-            method="update",
-            args=[{"visible": [False] * len(fig.data)}],
-            label=(i+1)/10,  # layout attribute
-        )
-        step["args"][0]["visible"][0] = True  # Toggle 1st trace to "visible"
-        step["args"][0]["visible"][1] = True  # Toggle 2nd trace to "visible"
-        step["args"][0]["visible"][i] = True  # Toggle i'th trace to "visible"
-        steps.append(step)
-
-
-    sliders = [dict(
-        active=10,
-        currentvalue={"prefix": "Opacity: "},
-        pad={"t": 50},
-        steps=steps
-    )]
-
-    fig.update_layout(sliders=sliders)
 
     #fig.show()
     return fig
