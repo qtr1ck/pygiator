@@ -65,19 +65,17 @@ class Block(object):
     def max_col(self):
         return max(self.tokens, key=itemgetter(2))[2]
 
-
-
-
 # Represent a files source code as tokens, also implements similarity check
 class Code:
-    def __init__(self, text):
+    def __init__(self, text, name=""):
         self._blocks = []
         self._max_row = 0
         self._max_col = 0
+        self._name = name
         #self.__tokenize(filename) # Generatore tokens from file
         self.__tokenizeFromText(text)
 
-    
+
     @property
     def blocks(self):
         return self._blocks
@@ -215,3 +213,6 @@ class Code:
 
     def __len__(self):
         return self._max_row
+
+    def get_name(self):
+        return self._name
