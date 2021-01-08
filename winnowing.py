@@ -6,11 +6,11 @@ Proceedings of the 2003 ACM SIGMOD international conference on Management of dat
 Example text: adorunrunrunadorunrun
 """
 
-import hashlib
+from hashlib import sha1
 
 # Define the kind of hash function to use
 def hash_fun(text):
-    hs = hashlib.sha1(text.encode("utf-8"))
+    hs = sha1(text.encode("utf-8"))
     hs = hs.hexdigest()[-4:]
     hs = int(hs, 16)
     return hs
@@ -58,13 +58,24 @@ def winnowing(text, size_k, window_size):
     return set(get_min(sl_window(hashes, window_size)))
 
 
+def intersection(lst1, lst2): 
+    temp = set(lst2) 
+    lst3 = [value for value in lst1 if value in temp] 
+    return len(lst3) 
+
 # Get similarity using winnowing algorithm + jaccard distance
 def winnowing_similarity(text_a, text_b, size_k = 5, window_size = 4):
     # Get fingerprints using winnowing
     w1 = winnowing(text_a, size_k, window_size)
     w2 = winnowing(text_b, size_k, window_size)
 
-    # Calculate jaccard distance
-    union = len(w1.union(w2))
-    intersect = len(w1.intersection(w2))
-    return intersect / union
+    # Do use list instead of set to also consider number of occurece of copied content
+    hash_list_a = [x[0] for x in w1]
+    hash_list_b = [x[0] for x in w2]
+
+    intersect = intersection(hash_list_a, hash_list_b) \
+                + intersection(hash_list_b, hash_list_a)
+    
+    union = len(hash_list_a) + len(hash_list_b)
+
+    return (intersect / union)

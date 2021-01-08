@@ -43,7 +43,3 @@ f2.close()
 
 b1 = c1.blocks
 b2 = c2.blocks
-
-
-for b in b1:
-    print("Similarity: %s  /  %s" %(b.similarity, b))

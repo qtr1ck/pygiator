@@ -4,6 +4,7 @@ import plotly.graph_objects as go
 import numpy as np
 
 
+# Class object to make change of similarity overlay in plot possible
 class sim_marker():
     
     def __init__(self, threshold = 0.8):
@@ -15,12 +16,14 @@ class sim_marker():
     def get_map(self):
         return self.cmap
 
+
+# Draw code representation as plots
 def draw_plot(code_a, code_b, sim_marker):
     fig = go.Figure()
 
     # stores required data from code_a and code_b into variables for convenience
-    filename_a = code_a.get_name()
-    filename_b = code_b.get_name()
+    filename_a = code_a.name
+    filename_b = code_b.name
     data_a = code_a.get_ctg_array()
     data_b = code_b.get_ctg_array()
     labels_a = code_a.get_clnstr_array()
@@ -37,19 +40,21 @@ def draw_plot(code_a, code_b, sim_marker):
         hovertemplate='Row: %{y}<br>Column: %{x}<br>String: \'%{text}\'<extra></extra>')
 
     data_a_sim = code_a.get_sim_array()
-    s = sim_marker  ## color map for similarity
+    s = sim_marker  # color map for similarity
     # similarity heatmap, serves as filteror the heatmap of code_a
     trace_a_sim = go.Heatmap(z=data_a_sim, name=filename_a, visible=True, showscale=False, colorscale=s.get_map(),
                             opacity=0.8, hovertemplate='Similarity: %{z}\'<extra></extra>')
     
-    # creates and fills the plots
+
+    # Create subplots to show both codes side by side
     fig = make_subplots(rows=1, cols=2, subplot_titles=[filename_a, filename_b])
 
+    # Append all heatmaps to according subplots
     fig.append_trace(trace_a, 1, 1)
     fig.append_trace(trace_b, 1, 2)
     fig.append_trace(trace_a_sim, 1, 1)
 
-    # layout
+    # Change the layout of heatmaps to fit code representation
     fig.update_yaxes(title_text="Line", autorange="reversed", 
                         mirror=True, ticks='outside', showline=True, linecolor='black')
     fig.update_xaxes(title_text="Block", 

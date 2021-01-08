@@ -19,12 +19,12 @@ def fileSelect():
 
 # outputs the heatmaps
 def showResult(c1, c2):
-  st.write('Similarity: ' + str(c1.similarity(c2)))
+  st.markdown('Similarity: **%.2f**' %(c1.similarity(c2)))
   # calculates the heigth of the plot in relation to number of lines
 
-  a = st.sidebar.slider("Select similarity threshold", value=90, min_value=1)
+  a = st.sidebar.slider("Select similarity threshold", 1, 100, 90)
   s = sim_marker()
-  s.set_threshold(a / 100)
+  s.set_threshold(a/100)
   # creates the plot
   st.plotly_chart(draw_plot(c1, c2, s))
 
@@ -48,13 +48,34 @@ def run_app():
   c1, c2 = computeCode(file_1, file_2)
 
   if 0 not in [c1, c2]:
+
+    # Show similarity using winnowing algorithm
+    winnowing_expander = st.beta_expander("Similarity using Winnowing Algorithm")
+    with winnowing_expander:
+      k_size = st.slider("KGrams Size", 2, 15, 5)
+      win_size = st.slider("Sliding Window Size", 2, 15, 4)
+      st.markdown('Winnowing-Similarity: **%.2f**' % c1.winnowing_similarity(c2, k_size, win_size))
+
+    # Add some space between the two widgets
+    st.text("")
+    st.text("")
+
+    # Show similarity using custom algorithm and pyplot for visualization
     if st.checkbox("Swap Scripts"):
       c1, c2 = c2, c1
+
+    
     showResult(c1, c2)
+    
+
+    
+
   else:
     st.write("Enter the source file paths in the sidebar.")
     logo = open('logo.svg')
     source = logo.read()
     st.write(renderSvg(source), unsafe_allow_html=True)
+
+
 
 run_app()

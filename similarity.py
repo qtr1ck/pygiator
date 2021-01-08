@@ -1,8 +1,9 @@
 from pygments.lexers import PythonLexer
 from operator import itemgetter
+from categories import get_category
 from statistics import mean
 from levensthein import lvs_distance
-from categories import get_category
+from winnowing import winnowing_similarity
 import numpy as np
 
 # Hold tokens for a single block within own class instance
@@ -83,6 +84,10 @@ class Code:
     @blocks.setter
     def blocks(self, b):
         self._blocks = b
+
+    @property
+    def name(self):
+        return self._name
 
     # Generate tokens for file
     def __tokenize(self, filename):
@@ -209,10 +214,18 @@ class Code:
 
         self.__pre_process(other)           # Do preprocessing step finding exact matches
         self.__process_similarity(other)    # Compare remaining blocks using levensthein distance on token categories
-        return self.__calculateSimScore()
+        return round(self.__calculateSimScore(), 2)
 
+    # Return winnowing similarity (a second calculation method for sim)
+    def winnowing_similarity(self, other, size_k = 5, window_size = 4):
+        score = winnowing_similarity(str(self), str(other), size_k, window_size)
+        return score
+
+    # Return length of code
     def __len__(self):
+        # Define length as row count of code
         return self._max_row
 
-    def get_name(self):
-        return self._name
+    # Return all tokens of code as string
+    def __str__(self):
+        return "".join(str(x) for x in self.blocks)
