@@ -41,8 +41,6 @@ class CodePlot():
         labels_a = self._code_a.get_clnstr_array()
         labels_b = self._code_b.get_clnstr_array()
 
-        print(data_a_sim)
-
         # code_a heatmap
         trace_a = go.Heatmap(
             z=data_a, text=labels_a, name=filename_a, showscale=False, colorscale=get_cmap(),
