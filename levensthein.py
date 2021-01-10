@@ -1,5 +1,9 @@
 import numpy as np
 
+# fast implementation using cython
+#import editdistance 
+
+
 def lvs_distance(s1, s2):
     x_size = len(s1) + 1
     y_size = len(s2) + 1

@@ -3,7 +3,7 @@ import base64
 #from PIL import Image
 from io import StringIO
 from similarity import Code
-from plot import draw_plot, sim_marker
+from plot import CodePlot
 
 # renders the logo, so it can be printed   
 def renderSvg(svg):
@@ -23,10 +23,10 @@ def showResult(c1, c2):
   # calculates the heigth of the plot in relation to number of lines
 
   a = st.sidebar.slider("Select similarity threshold", 1, 100, 90)
-  s = sim_marker()
-  s.set_threshold(a/100)
-  # creates the plot
-  st.plotly_chart(draw_plot(c1, c2, s))
+  p = CodePlot(c1, c2, a/100) # Create the plot
+
+  # Show plot in streamlit
+  st.plotly_chart(p.fig)
 
 # saves the result in the cache and only recalculates when something is changed
 @st.cache(allow_output_mutation=True, suppress_st_warning=True)
