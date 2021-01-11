@@ -1,5 +1,5 @@
 from plotly.subplots import make_subplots
-from categories import get_cmap
+from src.categories import get_cmap
 import plotly.graph_objects as go
 import numpy as np
 

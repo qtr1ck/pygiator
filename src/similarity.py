@@ -1,9 +1,9 @@
 from pygments.lexers import PythonLexer
 from operator import itemgetter
-from categories import get_category
+from src.categories import get_category
 from statistics import mean
-from levensthein import lvs_distance
-from winnowing import winnowing_similarity
+from src.levensthein import lvs_distance
+from src.winnowing import winnowing_similarity
 import numpy as np
 
 # Hold tokens for a single block within own class instance

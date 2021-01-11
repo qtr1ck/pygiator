@@ -1,9 +1,8 @@
 import streamlit as st
 import base64
-#from PIL import Image
 from io import StringIO
-from similarity import Code
-from plot import CodePlot
+from src.similarity import Code
+from src.plot import CodePlot
 
 # renders the logo, so it can be printed   
 def renderSvg(svg):
@@ -67,12 +66,9 @@ def run_app():
     
     showResult(c1, c2)
     
-
-    
-
   else:
     st.write("Enter the source file paths in the sidebar.")
-    logo = open('logo.svg')
+    logo = open('./misc/logo.svg')
     source = logo.read()
     st.write(renderSvg(source), unsafe_allow_html=True)
 
