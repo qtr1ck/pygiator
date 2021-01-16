@@ -1,168 +1,64 @@
-################################################################################
-##                                                                            ##
-##      Title:      Pygiator Logo                                             ##
-##      Author:     Patrick Schaefler                                         ##   
-##      Date:       15.11.2020                                                ##
-##      Version:    0.1                                                       ## 
-##                                                                            ##
-################################################################################
-
-from tkinter import *
-from turtle import *
 import turtle as t
+import random
+import math
+from alphabet import alphabet
 
-def plotDiamond(n, size, degree):
-    t.left(degree)
-    t.left(45)
+def displayMessage(message, fontSize ,color ,x ,y ,t ,charSpace):
+  t.color(color)
+  message=message.upper()
+  
+  for character in message:
+    if character in alphabet:
+      letter=alphabet[character]
+      t.penup()
+      for dot in letter:
+        t.goto(x + dot[0]*fontSize, y + dot[1]*fontSize)
+        t.pendown()
+      # character 'I' takes less space
+      if character == 'I': 
+        x += fontSize / 2
+      else: 
+        x += fontSize
 
-    for i in range(0, n):
-        endPos = t.Vec2D(0,0)
-        for j in range(0,4):
-            t.fd(size)
-            t.left(90)
-            if j == 1:
-                endPos = t.pos()
-        t.goto(endPos)
-    t.left(-45)
+def background(turtle):
+  # sidelength and diameter
+  l = 500
+  d =  math.sqrt(l * l - 2 * l * l * math.cos(math.radians(89)) + l * l)
 
-def plotP(size):
-    plotDiamond(10, size, 0)
-    for i in range(0,3):
-        plotDiamond(5, size, -90)
-        
-def plotY(size):
-    plotDiamond(5, size, 0)
-    tmpPos = t.pos()
+  turtle.penup()
+  turtle.setpos(0, d/2)
+  turtle.pendown()
+  # print circle
+  turtle.color('gray')
+  turtle.begin_fill()
+  turtle.circle(-d/2)
+  turtle.end_fill()
 
-    plotDiamond(6, size, 35)
-    t.up()
-    t.goto(tmpPos)
-    t.down()
-    plotDiamond(6, size, -70)
+  turtle.right(45.5)
+  # print pattern
+  for i in range(0,91):
+    if i % 2 == 0:
+      turtle.pencolor('red')
+    else:
+      turtle.pencolor('black')
 
-def plotG(size):
-    plotDiamond(3, size, 90)
-
-    for i in range(0, 2):
-        plotDiamond(2, size, -45)
-        plotDiamond(3, size, -45)
-
-    plotDiamond(2, size, -45)
-    plotDiamond(2, size, 135)
-    plotDiamond(5, size, -180)
-    plotDiamond(2, size, -45)
-    plotDiamond(2, size, 180)
-    plotDiamond(5, size, -135)
-    plotDiamond(2, size, -45)
-    plotDiamond(3, size, -45)
-    plotDiamond(1, size, -45)
-
-def plotI(size):
-    plotDiamond(5, size, 0)
-
-    t.up()
-    t.goto(t.pos() + t.Vec2D(0, size * 2))
-    t.down()
-
-    plotDiamond(1, size, 0)
-
-def plotA(size):
-    plotDiamond(3, size, 90)
-
-    for i in range(0, 2):
-        plotDiamond(2, size, -45)
-        plotDiamond(3, size, -45)
-
-    plotDiamond(2, size, -45)
-    plotDiamond(2, size, 135)
-    plotDiamond(7, size, -180)
-    plotDiamond(2, size, 180)
-    plotDiamond(2, size, 135)
-
-def plotT(size):
-    plotDiamond(1, size, 90)
-    plotDiamond(1, size, -45)
-    plotDiamond(9, size, -45)
-    plotDiamond(3, size, 180)
-    plotDiamond(2, size, 90)
-    plotDiamond(4, size, 180)
-
-def plotO(size):
-    plotDiamond(3, size, 90)
-
-    for i in range(0, 3):
-        plotDiamond(2, size, -45)
-        plotDiamond(3, size, -45)
-    plotDiamond(2, size, -45)
-
-def plotR(size):
-    plotDiamond(6, size, 0)
-    plotDiamond(1, size, 180)
-    plotDiamond(1, size, 135)
-    plotDiamond(2, size, -45)
-    plotDiamond(1, size, -45)
-
-def nextChar(pos):
-    t.up()
-    t.goto(pos) 
-    t.seth(0)
-    t.down()
-
-def plotLogo(size):
-    t.pensize(2)
-    t.speed(speed=0)
-    t.pencolor('#e3c729')
+    turtle.forward(l)
+    turtle.right(91)
     
-    t.right(90)
-    t.up()
-    t.fd(375)
-    t.down()
-    t.left(90)
-    t.color('#e3c729')
-    t.begin_fill()
-    t.circle(375)
-    t.end_fill()
 
-    # logo
-    t.pencolor('#e62727')
-    t.up()
-    t.goto(-360, -50)
-    t.down()
-    addPos = t.Vec2D(size * 14, 0)
-    posPrev = t.pos()
+def logo():
+  t.pensize(2)
+  t.speed(speed=0)
+  background(t)
 
-    plotP(size)
-    posPrev = posPrev + addPos
-    nextChar(posPrev)
+  t.pensize(9)
+  charSpace = 5
+  fontSize = 58
+  displayMessage("PYGIATOR", fontSize, 'red', -230, -(fontSize/2), t, charSpace)
 
-    plotY(size) 
-    posPrev = posPrev + addPos * 0.8
-    nextChar(posPrev)
+  # saves logo
+  # ts = t.getscreen()
+  # ts.getcanvas().postscript(file="./misc/logo.svg")
+  t.Screen().exitonclick()
 
-    plotG(size)
-    posPrev = posPrev + addPos * 0.4
-    nextChar(posPrev)
-
-    plotI(size)
-    posPrev = posPrev + addPos * 0.7
-    nextChar(posPrev)
-
-    plotA(size)
-    posPrev = posPrev + addPos * 0.7
-    nextChar(posPrev)
-
-    plotT(size)
-    posPrev = posPrev + addPos * 0.6
-    nextChar(posPrev)
-
-    plotO(size)
-    posPrev = posPrev + addPos * 0.5
-    nextChar(posPrev)
-
-    plotR(size)
-    t.ht()
-
-plotLogo(10)
-
-ts = t.getscreen()
-ts.getcanvas().postscript(file="duck.svg")
+logo()
