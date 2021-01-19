@@ -8,7 +8,7 @@ from src.plot import CodePlot
 @st.cache  
 def renderSvg(svg):
     b64 = base64.b64encode(svg.encode('utf-8')).decode("utf-8")
-    html = r'<img src="data:image/svg+xml;base64,%s"/>' % b64
+    html = r'<img id="pygiatorLogo" src="data:image/svg+xml;base64,%s"/>' % b64
     return html
 
 # outputs the heatmaps
@@ -17,7 +17,7 @@ def printResult(c1, c2):
   sliderValue = st.sidebar.slider("Select similarity threshold", 1, 100, 90)
   # creates the plot 
   p = CodePlot(c1, c2, sliderValue/100) 
-  st.plotly_chart(p.fig)
+  st.plotly_chart(p.fig, use_container_width=True)
 
 # saves the result in the cache and only recalculates when something is changed
 @st.cache(allow_output_mutation=True)
@@ -31,8 +31,38 @@ def computeCode(f1, f2):
   c2 = Code(fileTwo, f2.name)
   return c1, c2 
 
+def blankLine():
+  st.write("")
+
+def appStyle():
+  st.markdown(
+    f"""
+      <style>
+          .reportview-container .main .block-container{{
+              max-width: 90%;
+              padding-top: 0rem;
+              padding-right: 1rem;
+              padding-left: 1rem;
+              padding-bottom: 1rem;
+              margin-left: auto;
+              margin-right: auto;
+          }}
+          .reportview-container .main {{
+              color: black;
+              background-color: white;
+          }}
+          #pygiatorLogo{{
+            width: 70%;
+            height: auto;
+          }}
+      </style>
+    """,
+    unsafe_allow_html=True,
+  )
+
 def run_app():
   st.set_page_config('Pygiator', layout='centered')
+  appStyle()
 
   # sidebar
   file_1 = st.sidebar.file_uploader('First File', key='file1in', type=['py'])
@@ -49,7 +79,8 @@ def run_app():
     with winnowing_expander:
       k_size = st.slider("KGrams Size", 2, 15, 5)
       win_size = st.slider("Sliding Window Size", 2, 15, 4)
-      st.markdown('Winnowing-Similarity: **%.2f**' % c1.winnowing_similarity(c2, k_size, win_size))
+      st.markdown('Winnowing-Similarity: **%.2f**' % c1.winnowing_similarity(c2, k_size, win_size)) 
+    blankLine()
 
     # Show similarity using custom algorithm and pyplot for visualization
     if st.checkbox("Swap Scripts"):
