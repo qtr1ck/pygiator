@@ -22,7 +22,7 @@ def get_category(t):
         category = 'S' # Strings
     elif t[0] in token.Keyword:
         category = 'K' # Keywords
-    elif t[0] == token.Text and (search(r'\s{2,}\S', t[1]) != None):
+    elif t[0] == token.Text and (search(r'\s{2,}\S', t[1]) is not None):
         category = 'I' # Indent
     elif t[0] == token.Operator.Word:
         category = 'W' # Operator words (in not ...)

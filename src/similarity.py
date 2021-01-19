@@ -110,7 +110,7 @@ class Code:
         for token in tokens:
             c = get_category(token)
             
-            if (c != None):
+            if (c is not None):
                 # Linefeed detected -> do not append to result but change position
                 if c == 'L':
                     row = row + 1 #Increment line position
