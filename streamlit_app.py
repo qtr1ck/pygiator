@@ -83,7 +83,7 @@ def run_app():
     blankLine()
 
     # Show similarity using custom algorithm and pyplot for visualization
-    if st.checkbox("Swap Scripts"):
+    if st.checkbox("Swap Files"):
       c1, c2 = c2, c1
     printResult(c1, c2)
 
