@@ -7,14 +7,14 @@ from src.plot import CodePlot
 # renders the logo, so it can be printed 
 @st.cache  
 def renderSvg(svg):
-    b64 = base64.b64encode(svg.encode('utf-8')).decode("utf-8")
+    b64 = base64.b64encode(svg.encode('utf-8')).decode('utf-8')
     html = r'<img id="pygiatorLogo" src="data:image/svg+xml;base64,%s"/>' % b64
     return html
 
 # outputs the heatmaps
 def printResult(c1, c2):
-  st.markdown('Similarity: **%.2f**' %(c1.similarity(c2)))
-  sliderValue = st.sidebar.slider("Select similarity threshold", 1, 100, 90)
+  st.write('Similarity: **{:.0f}%**'.format(c1.similarity(c2) * 100))
+  sliderValue = st.sidebar.slider('Select similarity threshold', 1, 100, 90)
   # creates the plot 
   p = CodePlot(c1, c2, sliderValue/100) 
   st.plotly_chart(p.fig, use_container_width=True)
@@ -32,7 +32,7 @@ def computeCode(f1, f2):
   return c1, c2 
 
 def blankLine():
-  st.write("")
+  st.write('')
 
 def appStyle():
   st.markdown(
@@ -75,15 +75,15 @@ def run_app():
 
   if 0 not in [c1, c2]: 
     # Show similarity using winnowing algorithm
-    winnowing_expander = st.beta_expander("Similarity using Winnowing Algorithm")
+    winnowing_expander = st.beta_expander('Similarity using Winnowing Algorithm')
     with winnowing_expander:
-      k_size = st.slider("KGrams Size", 2, 15, 5)
-      win_size = st.slider("Sliding Window Size", 2, 15, 4)
-      st.markdown('Winnowing-Similarity: **%.2f**' % c1.winnowing_similarity(c2, k_size, win_size)) 
+      k_size = st.slider('KGrams Size', 2, 15, 5)
+      win_size = st.slider('Sliding Window Size', 2, 15, 4)
+      st.write('Winnowing-Similarity: **{:.0f}%**'.format(c1.winnowing_similarity(c2, k_size, win_size) * 100)) 
     blankLine()
 
     # Show similarity using custom algorithm and pyplot for visualization
-    if st.checkbox("Swap Files"):
+    if st.checkbox('Swap Files'):
       c1, c2 = c2, c1
     printResult(c1, c2)
 
@@ -93,6 +93,6 @@ def run_app():
     source = logo.read()
     st.write(renderSvg(source), unsafe_allow_html=True)
     logo.close()
-    a.write("Enter the source file paths in the sidebar.")
+    a.write('Enter the source file paths in the sidebar.')
   
 run_app()
