@@ -87,12 +87,12 @@ def run_app():
       c1, c2 = c2, c1
     printResult(c1, c2)
 
-  else: # home page is printed if not two files selected
+  else: # home page is printed if no files selected
     a = st.beta_container()
-    logo = open('./misc/logo.svg')
-    source = logo.read()
-    st.write(renderSvg(source), unsafe_allow_html=True)
-    logo.close()
+    logo_file = open('./misc/logo.svg')
+    logo_data = logo_file.read()
+    st.write(renderSvg(logo_data), unsafe_allow_html=True)
+    logo_file.close()
     a.write('Enter the source file paths in the sidebar.')
   
 run_app()
