@@ -122,6 +122,10 @@ class Code:
                     result = []
 
                 if c != 'L':
+                    # Differentiate function calls from variables
+                    if prev_c == 'V' and token[1] == '(':
+                        result[-1] = 'A', result[-1][1], result[-1][2], result[-1][3]
+
                     result.append((c, row, col, token[1])) # Append result for single token
                     col += 1 #Increment column position
                     if col > self._max_col:

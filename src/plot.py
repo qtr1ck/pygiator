@@ -43,13 +43,13 @@ class CodePlot():
 
         # code_a heatmap
         trace_a = go.Heatmap(
-            z=data_a, text=labels_a, name=filename_a, showscale=False, colorscale=get_cmap(),
+            z=data_a, text=labels_a, name=filename_a, showscale=False, colorscale=get_cmap(), zmax=ord('X'), zmin=0,
             hovertemplate='Row: %{y}<br>Column: %{x}<br>String: \'%{text}\'<extra></extra>')
 
         # code_b heatmap
         trace_b = go.Heatmap(
-            z=data_b, text=labels_b, name=filename_b, showscale=False, colorscale=get_cmap(),
-            hovertemplate='Row: %{y}<br>Column: %{x}<br>String: \'%{text}\'<extra></extra>')
+            z=data_b, text=labels_b, name=filename_b, showscale=False, colorscale=get_cmap(), zmax=ord('X'), zmin=0,
+            hovertemplate='Row: %{y}<br>Column: %{x}<br>Value: %{z}<br>String: \'%{text}\'<extra></extra>')
 
         # similarity heatmap, serves as filteror the heatmap of code_a
         trace_a_sim = go.Heatmap(z=data_a_sim, visible=True, showscale=False, zmax=1.0, zmin=0.0,
