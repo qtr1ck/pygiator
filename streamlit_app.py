@@ -13,11 +13,19 @@ def renderSvg(svg):
 
 # outputs the heatmaps
 def printResult(c1, c2):
-  st.write('Similarity: **{:.0f}%**'.format(c1.similarity(c2) * 100))
+  score_text = st.markdown('Similarity: **{:.0f}%**'.format(c1.similarity(c2) * 100))
   sliderValue = st.sidebar.slider('Select similarity threshold', 1, 100, 90)
+
   # creates the plot 
   p = CodePlot(c1, c2, sliderValue/100) 
   st.plotly_chart(p.fig, use_container_width=True)
+
+  # TODO: BUGFIX -> Slider does not always lead to recalculation of score!
+  # Recalculate similarity score if slider changed
+  if sliderValue:
+    c1.similarity_threshold = sliderValue/100
+    score_text = st.markdown('Similarity: **{:.0f}%**'.format(c1.calculateSimScore() * 100))
+    
 
 # saves the result in the cache and only recalculates when something is changed
 @st.cache(allow_output_mutation=True)

@@ -1,9 +1,12 @@
 import numpy as np
 
-# fast implementation using cython
-#import editdistance 
+"""
+This implementation is not used for similarity calculation anymore, because of performance reasons.
+Difflib's SequenceMatcher returns the same results and is much faster at the same time
+Anyway the module is still present to illustrate how to calculate levenshtein distance
+"""
 
-
+# Levenshtein distance using numpy
 def lvs_distance(s1, s2):
     x_size = len(s1) + 1
     y_size = len(s2) + 1

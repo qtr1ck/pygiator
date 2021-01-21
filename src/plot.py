@@ -72,7 +72,7 @@ class CodePlot():
 
     def __update_layout(self):
         # Change the layout of heatmaps to fit code representation
-        self._fig.update_yaxes(title_text="Line", autorange="reversed", 
+        self._fig.update_yaxes(title_text="Row", autorange="reversed", 
                             mirror=True, ticks='outside', showline=True, linecolor='black')
         self._fig.update_xaxes(title_text="Column", 
                             mirror=True, ticks='outside', showline=True, linecolor='black')

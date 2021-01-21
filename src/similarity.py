@@ -2,7 +2,7 @@ from pygments.lexers import PythonLexer
 from operator import itemgetter
 from src.categories import get_category
 from statistics import mean
-from src.levensthein import lvs_distance
+from difflib import SequenceMatcher
 from src.winnowing import winnowing_similarity
 import numpy as np
 
@@ -20,14 +20,6 @@ class Block(object):
     @similarity.setter
     def similarity(self, s):
         self._similarity = s
-    
-    # @property
-    # def compared(self):
-    #     return self._compared
-
-    # @compared.setter
-    # def compared(self, v):
-    #     self._compared = v
 
     @property
     def tokens(self):
@@ -46,17 +38,26 @@ class Block(object):
     # OBJECTMETHODS:
     #---------------------------------------------------------------------------
 
-    #TODO : Performance -> Use other Levensthein implementation, Use Weights??
+    # Compare blocks using tokens
     def compare(self, other):
         # Get similarity comparing two blocks
         if (isinstance(other, Block)):
-            ldis = lvs_distance(str(self),str(other))
-            max_t_len = max(len(str(self)), len(str(other)))
-            s_score = (1 - ldis/max_t_len) #Return similarity score
 
-            return s_score
+            # OLD IMPLEMENTATION USING OWN LEVENSHTEIN FUNCTION:
+            #-------------------------------------------------------
+            #ldis = lvs_distance(str(self),str(other))
+            #max_t_len = max(len(str(self)), len(str(other)))
+            #s_score = (1 - ldis/max_t_len) #Return similarity score
 
-    # TODO: Restore linefeeds and whitespaces when creating clearstring?
+            # NEW IMPLEMENTATION USING DIFFLIB (much faster with same result!):
+            return SequenceMatcher(None,str(self),str(other)).ratio()
+
+    # Compare blocks using raw strings
+    def compare_str(self, other):
+        if (isinstance(other, Block)):
+            return SequenceMatcher(None,self.clnstr(),other.clnstr()).ratio()
+
+
     def clnstr(self):
         return (''.join(str(t[3].lower()) for t in self.tokens))
 
@@ -68,14 +69,14 @@ class Block(object):
 
 # Represent a files source code as tokens, also implements similarity check
 class Code:
-    def __init__(self, text, name=""):
+    def __init__(self, text, name="", similarity_threshold = 0.9):
         self._blocks = []
         self._max_row = 0
         self._max_col = 0
         self._name = name
-        #self.__tokenize(filename) # Generatore tokens from file
+        self._similarity_threshold = similarity_threshold
+        self._lvs_blocksize = 8
         self.__tokenizeFromText(text)
-
 
     @property
     def blocks(self):
@@ -88,6 +89,14 @@ class Code:
     @property
     def name(self):
         return self._name
+
+    @property
+    def similarity_threshold(self):
+        return self._similarity_threshold
+
+    @similarity_threshold.setter
+    def similarity_threshold(self, t):
+        self._similarity_threshold = t
 
     # Generate tokens for file
     def __tokenize(self, filename):
@@ -182,45 +191,42 @@ class Code:
             for j,block_b in enumerate(other_blocks):
                 if block_a.similarity == 1:
                     break
-                #if not block_b.compared:
                 if block_a.clnstr() == block_b.clnstr():
                     block_a.similarity = 1.0
-                    other_blocks[j].compared = True
 
     def __process_similarity(self, other):
         for block_a in self.blocks:
-            # Only do levenshtein compare for more complex blocks
-            if block_a.similarity < 1 and len(block_a) > 8:
-                best_score = 0
-                #index_best = 0
+            # Only compare if block does not totally match already
+            if block_a.similarity < 1:
+                best_score = 0 # Remember the best matching score
                 for block_b in other.blocks:
-                    #if not block_b.compared:
-                    score = block_a.compare(block_b)
+                    if len(block_a) > self._lvs_blocksize:
+                        score = block_a.compare(block_b)
+                    else:
+                        score = block_a.compare_str(block_b)
+
+                    # Set best score if found a better match
                     if score > best_score:
                         best_score = score
-                        #index_best = j
                 block_a.similarity = best_score
-                #if best_score > 0:
-                   #other.blocks[index_best].compared = True
 
-    # Calculate similarity score
-    def __calculateSimScore(self):
+    # Calculate total result -> similarity score
+    def calculateSimScore(self):
         total_len = 0
         len_plagiat = 0
         for block in self.blocks:
             total_len += len(block)
-            len_plagiat += len(block) * block.similarity
+            if (block.similarity > self._similarity_threshold):
+                len_plagiat += len(block) * block.similarity
         return round((len_plagiat/total_len),2)
 
-    # Return similarity 
+    # Return similarity (primary calculation method for similarity score)
     def similarity(self, other):
-        #other._setUncompared()
-
-        self.__pre_process(other)           # Do preprocessing step finding exact matches
+        self.__pre_process(other)           # Do preprocessing step finding exact string matches
         self.__process_similarity(other)    # Compare remaining blocks using levensthein distance on token categories
-        return round(self.__calculateSimScore(), 2)
+        return round(self.calculateSimScore(), 2)
 
-    # Return winnowing similarity (a second calculation method for sim)
+    # Return winnowing similarity (a second calculation method for similarity score)
     def winnowing_similarity(self, other, size_k = 5, window_size = 4):
         score = winnowing_similarity(str(self), str(other), size_k, window_size)
         return score
