@@ -211,20 +211,20 @@ class Code:
                 block_a.similarity = best_score
 
     # Calculate total result -> similarity score
-    def calculateSimScore(self):
+    def __calculateSimScore(self):
         total_len = 0
         len_plagiat = 0
         for block in self.blocks:
             total_len += len(block)
             if (block.similarity > self._similarity_threshold):
                 len_plagiat += len(block) * block.similarity
-        return round((len_plagiat/total_len),2)
+        return len_plagiat/total_len
 
     # Return similarity (primary calculation method for similarity score)
     def similarity(self, other):
         self.__pre_process(other)           # Do preprocessing step finding exact string matches
         self.__process_similarity(other)    # Compare remaining blocks using levensthein distance on token categories
-        return round(self.calculateSimScore(), 2)
+        return round(self.__calculateSimScore(), 2)
 
     # Return winnowing similarity (a second calculation method for similarity score)
     def winnowing_similarity(self, other, size_k = 5, window_size = 4):
