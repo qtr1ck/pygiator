@@ -11,6 +11,17 @@ def renderSvg(svg):
     html = r'<img id="pygiatorLogo" src="data:image/svg+xml;base64,%s"/>' % b64
     return html
 
+# Shows similarity using winnowing algorithm
+def winnowing(c1, c2):
+    winnowing_expander = st.beta_expander('Similarity using Winnowing Algorithm')
+    with winnowing_expander:
+        col1, col2 = st.beta_columns(2)
+        with col1:
+            k_size = st.slider('KGrams Size', 2, 15, 5)
+        with col2:
+            win_size = st.slider('Sliding Window Size', 2, 15, 4)
+        st.write('Winnowing-Similarity: **{:.0f}%**'.format(c1.winnowing_similarity(c2, k_size, win_size) * 100))
+
 # outputs the heatmaps
 def printResult(c1, c2):
     c1.similarity_threshold = st.sidebar.slider('Select similarity threshold', 1, 100, 90) / 100
@@ -20,12 +31,17 @@ def printResult(c1, c2):
     p = CodePlot(c1, c2, c1.similarity_threshold) 
     st.plotly_chart(p.fig, use_container_width=True)
 
-@st.cache(allow_output_mutation=True)
+@st.cache(allow_output_mutation=True, suppress_st_warning=True)
 def computeCode(f1, f2):
     if None in [f1,f2]:
         return 0,0
+
     fileOne = f1.read().decode(errors='ignore')
     fileTwo = f2.read().decode(errors='ignore')
+
+    if len(fileOne) == 0 or len(fileTwo) == 0:
+        st.error('ERROR: a file is empty')
+        return 0,0
 
     c1 = Code(fileOne, f1.name)
     c2 = Code(fileTwo, f2.name)
@@ -60,6 +76,7 @@ def appStyle():
         unsafe_allow_html=True,
     )
 
+
 def run_app():
     st.set_page_config('Pygiator', layout='centered')
     appStyle()
@@ -74,14 +91,8 @@ def run_app():
     c1, c2 = computeCode(file_1, file_2)
 
     if 0 not in [c1, c2]: 
-        # Show similarity using winnowing algorithm
-        winnowing_expander = st.beta_expander('Similarity using Winnowing Algorithm')
-        with winnowing_expander:
-            k_size = st.slider('KGrams Size', 2, 15, 5)
-            win_size = st.slider('Sliding Window Size', 2, 15, 4)
-            st.write('Winnowing-Similarity: **{:.0f}%**'.format(c1.winnowing_similarity(c2, k_size, win_size) * 100)) 
+        winnowing(c1, c2)
         blankLine()
-
         # Show similarity using custom algorithm and pyplot for visualization
         if st.checkbox('Swap Files'):
             c1, c2 = c2, c1
