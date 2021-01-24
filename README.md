@@ -2,13 +2,13 @@
 
 ## Overview
 
-In the course "Scripting Languages" we have to develop a plagiarism scanner for python scripts.
+In the course "Scripting Languages" we have to develop a plagiarism finder for python scripts.
 It must be developed in python and ultimately be available as a desktop or web application.
-A logo is also required and the turtle module should be use for this.
+A logo is also required and the turtle module should be used for this.
 
 ## Requirements and Installation
 
-To run **Pygiator** [Python 3.8](https://www.python.org/) or higher must be installed.
+To run **Pygiator** [Python 3.8 or higher](https://www.python.org/) must be installed.
 Use the requirements.txt file to install the required modules.
 
 ```bash
