@@ -75,7 +75,7 @@ class CodePlot():
                             mirror=True, ticks='outside', showline=True, linecolor='black')
         self._fig.update_xaxes(title_text="Column", 
                             mirror=True, ticks='outside', showline=True, linecolor='black')
-        self._fig.update_layout(title_text="Vizualized Result", title_font_size=33)
+        self._fig.update_layout(title_text="Visualized Result", title_font_size=33)
 
         marginTop = 100
         marginBottom = 10
