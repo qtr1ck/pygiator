@@ -1,5 +1,7 @@
 # Pygiator
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/qtr1ck/pygiator/main)
+
 ## Overview
 
 In the course "Scripting Languages" we have to develop a plagiarism finder for python scripts.
