@@ -38,7 +38,12 @@ In addition to the numerical result, a visual result is also displayed as a heat
 ### Swap Files
 
 The selected files can be swapped at anytime by clicking the checkbox in the top left.
+  
 
 ## Winnowing Similarity
 
-In progress.
+As a second method to calculate the similarity of two python scripts the winnowing algorithm is available as well. Winnowing is using Hashing in combination with a Sliding-window to produce a fingerprint for each document. The similarity score is calculated using the [Jaccard similarity coefficient](https://en.wikipedia.org/wiki/Jaccard_index).  
+  
+In difference to our other calculation method, Winnowing is not able to deliver details about single Blocks, but only gives you a single result for similarity.  
+
+For our implementation we made use of the paper [Winnowing: local algorithms for document fingerprinting](https://theory.stanford.edu/~aiken/publications/papers/sigmod03.pdf).
