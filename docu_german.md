@@ -9,13 +9,19 @@ Mit dem Pygiator kann man zwei Python-Skripte vergleichen und dabei feststellen 
 
 ## Installation und Anforderungen
 
-Um den Pygiator lokal laufen zu lassen ist es erforderlich, dass [Python 3.8 oder höher](https://www.python.org/)  installiert ist. Es müssen auch weitere Module installiert werden, dafür liegt die **requirements.txt** Datei bereit. Die Installation dieser erfolgt durch die Eingabe von folgendem Kommando:
+Um den Pygiator lokal laufen zu lassen ist es erforderlich, dass [Python 3.8 oder höher](https://www.python.org/) installiert ist. Das Projekt selbst findet man auf Github unter https://github.com/qtr1ck/pygiator und enthält alle erforderlichen Dateien. Es müssen in der Regel auch weitere Module installiert werden, dafür liegt die **requirements.txt** Datei bereit. Die Installation dieser erfolgt durch die Eingabe von folgendem Kommando:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Außerdem kann der Plagiatfinder auch auf [Streamlit](https://share.streamlit.io/qtr1ck/plagiat_scanner/main) abgerufen werden. Dafür sind lediglich eine aufrechte Internetverbindung und ein Browser erforderlich.
+Nachdem die erforderlichen Module installiert sind, kann der Pygiator gestartet werden. Dafür sollte ein Terminal im Root Ordner des Pygiators geöffnet werden oder man innerhalb des Terminals dort hinnavigieren, anschließend kann die Anwendung mit nachfolgendem Kommando gestartet werden und ein Browserfenster sollte sich öffnen.
+
+```bash
+streamlit run streamtlit_app.py
+```
+
+Möchte man ohne großen Aufwand den Pygiator verwenden und die Installation von Python ist bereits ein großes Hindernis, so kann dieser auch unter https://share.streamlit.io/qtr1ck/pygiator/main abgerufen werden. Dafür sind lediglich eine aufrechte Internetverbindung und ein Browser erforderlich.
 
 ---
 
