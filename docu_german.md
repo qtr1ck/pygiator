@@ -76,7 +76,7 @@ Da die Programmiersprache Python große Freiheit bei der Anordnung von Programmb
 Die Ähnlichkeit für den gesamten Code ergibt sich aus:  
 (Gesamtlänge der als Plagiat erachteten Blöcke) / (Blocklängen Total)
 
-### Methode 2: Vergleich unter Nutzung des Winnowing Algorithmus
+#### Methode 2: Vergleich unter Nutzung des Winnowing Algorithmus
 ---
 Durch die Kombination eines Hashing-Verfahrens, sowie eines Sliding-Windows wird ein Fingerabdruck für einen gesamten Source-Code erstellt. Dabei wird der bereits vorverarbeitete Code verwendet. Der Fingerabdruck eines Dokuments besteht aus einem Set von Hashwerten. Um die Ähnlichkeit zweier Source-Codes zu erhalten, kann der Jaccard-Koeffizient herangezogen werden.  
   
@@ -85,7 +85,7 @@ Jaccard-Koeffizient:
   
 Für die Implementierung wurde das Paper [Winnowing: local algorithms for document fingerprinting](https://theory.stanford.edu/~aiken/publications/papers/sigmod03.pdf) herangezogen.
 
-### Backend
+#### Backend
 
 Für die Logik wurden unter anderem die beiden Klassen *Block* und *Code* erstellt. Die Erstere wird dabei genutzt um die Bestandteile eines Code-Blockes in Form von Tokens zu repräsentieren. Außerdem kann die Ähnlichkeit, welcher beim Vergleich mit einem anderen *Block* Objekt festgestellt wurde, in jeder Block-Instanz festgehalten werden.  
 
