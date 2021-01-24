@@ -5,7 +5,7 @@ import numpy as np
 
 
 class CodePlot():
-    def __init__(self, code_a, code_b, threshold = 0.8):
+    def __init__(self, code_a, code_b, threshold = 0.9):
         self._fig = go.Figure()
         self._code_a = code_a
         self._code_b = code_b
@@ -26,7 +26,6 @@ class CodePlot():
 
         # Update cmap of overlay trace with new threshold
         self._fig.data[2].update(colorscale=self.__overlay_cmap())
-
 
     def __overlay_cmap(self):
         return [[0, "rgb(255, 255, 255)"],[self._threshold, "rgb(255, 255, 255)"],
@@ -49,11 +48,11 @@ class CodePlot():
         # code_b heatmap
         trace_b = go.Heatmap(
             z=data_b, text=labels_b, name=filename_b, showscale=False, colorscale=get_cmap(), zmax=ord('X'), zmin=0,
-            hovertemplate='Row: %{y}<br>Column: %{x}<br>Value: %{z}<br>String: \'%{text}\'<extra></extra>')
+            hovertemplate='Row: %{y}<br>Column: %{x}<br>String: \'%{text}\'<extra></extra>')
 
         # similarity heatmap, serves as filteror the heatmap of code_a
         trace_a_sim = go.Heatmap(z=data_a_sim, visible=True, showscale=False, zmax=1.0, zmin=0.0,
-                        colorscale=self.__overlay_cmap(), opacity=0.8, hovertemplate='Similarity: %{z}\'<extra></extra>')
+                        colorscale=self.__overlay_cmap(), opacity=0.6, hovertemplate='Similarity: %{z}\'<extra></extra>')
 
         return[trace_a, trace_b, trace_a_sim]
 
@@ -86,9 +85,29 @@ class CodePlot():
             plotHeight = 600
 
         self._fig.update_layout(height=plotHeight, margin=dict(t=marginTop, b=marginBottom, l=0), 
-                                width=900, hovermode='x')
+                                width=900, hovermode='x',
+                                # Make buttons to hide/unhide similarity overlay
+                                updatemenus=[
+                                    dict(
+                                        type="buttons",
+                                        buttons=list([
+                                            dict(label="Show similarity overlay",
+                                                method="restyle",
+                                                args=[{"opacity": 0.6}, [2]]),
+                                            dict(label="Hide similarity overlay",
+                                                method="restyle",
+                                                args=[{"opacity": 0.0}, [2]]),
+                                        ]),
+                                        showactive=True,
+                                    )
+                                ])
 
 
     def __create(self):
         self.__make_subplots()
         self.__update_layout()
+
+
+    # Hide the similarity overlay
+    def hide_overlay(self):
+        self._fig.data[2].update(opacity=0.0)
