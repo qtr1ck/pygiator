@@ -69,15 +69,19 @@ categories = {
 Kommentare und Leerzeilen spielen bei der Ähnlichkeitsanalyse keine Rolle und werden entsprechend ignoriert.  
 Nachdem die Tokenstrings für die beiden Skripte vorliegen, efolgt der Vergleich dieser über zwei verschiedene Methoden.
 
-#### Methode 1: Blockweiser Vergleich über Difflib 
+#### Methode 1: Blockweiser Vergleich über Difflib
+
 ---
+
 Da die Programmiersprache Python große Freiheit bei der Anordnung von Programmblöcken lässt, ist es sinnvoll einen blockweisen Vergleich durchzuführen. Jeder Block eines Codes A wird dabei mit allen Blöcken eines Codes B abgeglichen. Es wird dabei immer nur die größte gefundene Ähnlichkeit als Resultat für den aktuellen Block übernommen. Für den Vergleich wird der ***SequenceMatcher*** aus dem Modul ***difflib*** verwendet. Dieser verwendet die Levenshtein Distanz zur Berechnung der Ähnlichkeit zweier Strings und gibt diese als Wert zwischen 0 und 1 zurück.  
   
 Die Ähnlichkeit für den gesamten Code ergibt sich aus:  
 (Gesamtlänge der als Plagiat erachteten Blöcke) / (Blocklängen Total)
 
 #### Methode 2: Vergleich unter Nutzung des Winnowing Algorithmus
+
 ---
+
 Durch die Kombination eines Hashing-Verfahrens, sowie eines Sliding-Windows wird ein Fingerabdruck für einen gesamten Source-Code erstellt. Dabei wird der bereits vorverarbeitete Code verwendet. Der Fingerabdruck eines Dokuments besteht aus einem Set von Hashwerten. Um die Ähnlichkeit zweier Source-Codes zu erhalten, kann der Jaccard-Koeffizient herangezogen werden.  
   
 Jaccard-Koeffizient:  
@@ -85,7 +89,7 @@ Jaccard-Koeffizient:
   
 Für die Implementierung wurde das Paper [Winnowing: local algorithms for document fingerprinting](https://theory.stanford.edu/~aiken/publications/papers/sigmod03.pdf) herangezogen.
 
-#### Backend
+### Backend
 
 Für die Logik wurden unter anderem die beiden Klassen *Block* und *Code* erstellt. Die Erstere wird dabei genutzt um die Bestandteile eines Code-Blockes in Form von Tokens zu repräsentieren. Außerdem kann die Ähnlichkeit, welche beim Vergleich mit einem anderen *Block* Objekt festgestellt wurde, in jeder Block-Instanz festgehalten werden.  
 
@@ -93,9 +97,9 @@ Die Klasse *Code* sorgt dafür, dass ein beliebiges Skript in Form von einzelnen
 
 Desweiteren wurde für die Heatmap auch eine Klasse erstellt. Diese verarbeitet zwei *Code* Objekte und bildet die Tokens in unterschiedlichen Farben ab. Zudem kann man auch einen Grenzwert übergeben, mit welchem die Abbildung des ersten *Code* Objekts angepasst wird. Dabei werden jene Blöcke in welchen die Ähnlichkeit den Grenzwert überschreitet, mit roter Farbe überlagert dargestellt.
 
-Klassendiagramme:
+Klassendiagramm:
 
-TODO: erstellen und einfügen
+![UML Klassenmodel](./misc/uml-class-model.png)
 
 ### Frontend
 

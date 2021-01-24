@@ -86,7 +86,7 @@ def run_app():
     file_2 = st.sidebar.file_uploader('Second File', key='file2in', type=['py'])
 
     # main page
-    st.title('Pygiator - Plagiat Scanner for Python Source Code')
+    st.title('Pygiator - Plagiarism Finder for Python Source Code')
 
     c1, c2 = computeCode(file_1, file_2)
 
