@@ -1,9 +1,11 @@
-# Pygiator
+# Pygiator - Plagiatfinder
 
 Mit dem Pygiator kann man zwei Python-Skripte vergleichen und dabei feststellen ob es sich um ein Plagiat handelt. Dieses Programm wurde im Zuge der Lehrveranstaltung **Skriptsprachen** entwickelt. Die Anforderungen dabei waren:
 
 + zwei Eingangsparameter - die beiden Pythonskripte
 + ein Ausgangsparameter - die Ähnlichkeit
+
+---
 
 ## Installation und Anforderungen
 
@@ -13,7 +15,9 @@ Um den Pygiator lokal laufen zu lassen ist es erforderlich, dass [Python 3.8 ode
 pip install -r requirements.txt
 ```
 
-Außerdem kann das Programm auch auf [Streamlit](https://share.streamlit.io/qtr1ck/plagiat_scanner/main) abgerufen werden. Dafür sind lediglich eine aufrechte Internetverbindung und ein Browser erforderlich.
+Außerdem kann der Plagiatfinder auch auf [Streamlit](https://share.streamlit.io/qtr1ck/plagiat_scanner/main) abgerufen werden. Dafür sind lediglich eine aufrechte Internetverbindung und ein Browser erforderlich.
+
+---
 
 ## Verwendung
 
@@ -22,6 +26,8 @@ In der Seitenleiste sind zwei Felder, durch einen Klick darauf öffnet sich ein 
 Wenn ein Resultat vorliegt, kann die Heatmap mit einem Slider in der Seitenleiste noch angepasst werden. Dabei kann ein Grenzwert ausgewählt werden und all jene Zeilen welche eine größere Ähnlichkeit vorweisen, werden rot eingefärbt.
 
 Desweiteren können die beiden Dateien vertauscht werden, links über der Heatmap befindet sich eine Checkbox, durch aus- bzw. abwählen werden sie dabei vertauscht.
+
+---
 
 ## Implementierung
 
@@ -55,7 +61,15 @@ Nachdem die Tokenstrings für die beiden Skripte vorliegen, efolgt der Vergleich
 
 ### Backend
 
-TODO: noch schreiben
+Für die Logik wurden unter anderem die beiden Klassen *Block* und *Code* erstellt. Die Erstere wird dabei genutzt um Zeilen des vorgelegten Pythonskripts in Tokens zu repräsentieren. Außerdem gibt es eine weitere Eigenschaft welche gespeichert wird, und zwar die Ähnlichkeit welche festgestellt wurde beim Vergleich mit einem anderen *Block* Objekt.
+
+Die Klasse *Code* sorgt dafür das ein beliebiges Skript in Form von den einzelnen Blöcken abgespeichert wird. Außerdem bietet sie weitere Funktionalitäten und Methoden, wie in etwa jene um die Ähnlichkeit zwei solcher *Code* Objekte zu erhalten. Dabei gibt es einmal die Möglichkeit diese klassisch zu ermitteln oder mit dem Winnowing Algorithmus.
+
+Desweiteren wurde für die Heatmap auch eine Klasse erstellt, diese verarbeitet zwei *Code* Objekte und bildet die Tokens in unterschiedlichen Farben ab. Zudem kann auch ein Grenzwert übergeben werden, mit welchem die Abbildung des ersten *Code* Objekts angepasst wird. Dabei werden jene Zeilen wo die Ähnlichkeit den Grenzwert überschreitet mit einem roten Filter dargestellt.
+
+Klassendiagramme:
+
+TODO: erstellen und einfügen
 
 ### Frontend
 
