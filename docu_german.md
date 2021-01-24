@@ -15,7 +15,7 @@ Um den Pygiator lokal laufen zu lassen ist es erforderlich, dass [Python 3.8 ode
 pip install -r requirements.txt
 ```
 
-Nachdem die erforderlichen Module installiert sind, kann der Pygiator gestartet werden. Dafür sollte ein Terminal im Root Ordner des Pygiators geöffnet werden oder man innerhalb des Terminals dort hinnavigieren, anschließend kann die Anwendung mit nachfolgendem Kommando gestartet werden und ein Browserfenster sollte sich öffnen.
+Nachdem die erforderlichen Module installiert sind, kann der Pygiator gestartet werden. Dafür sollte ein Terminal im Root Ordner des Pygiators geöffnet werden oder man navigiert innerhalb des Terminals dort hin. Anschließend kann die Anwendung mit nachfolgendem Kommando gestartet werden und ein Browserfenster mit der laufenden Anwendung sollte sich öffnen.
 
 ```bash
 streamlit run streamtlit_app.py
@@ -27,11 +27,13 @@ Möchte man ohne großen Aufwand den Pygiator verwenden und die Installation von
 
 ## Verwendung
 
-In der Seitenleiste sind zwei Felder, durch einen Klick darauf öffnet sich ein neues Fenster, wo die Python-Dateien ausgewählt werden können. Sobald zwei Skripte ausgewählt sind, erfolgt die Berechnung und das Resultat wird Prozent und zusätzlich als eine Heatmap angezeigt.
+In der Seitenleiste befinden sich zwei Felder. Durch einen Klick auf diese öffnet sich ein neues Fenster, in welchem die Python-Dateien ausgewählt werden können. Sobald zwei Skripte ausgewählt wurden, erfolgt die Berechnung der Ähnlichkeit und das Resultat wird in Prozent angezeigt. Zusätzlich erfolgt eine Darstellung beider Code-Strukturen, sowie der Ähnlichkeit je Block als Heatmap.
 
-Wenn ein Resultat vorliegt, kann die Heatmap mit einem Slider in der Seitenleiste noch angepasst werden. Dabei kann ein Grenzwert ausgewählt werden und all jene Zeilen welche eine größere Ähnlichkeit vorweisen, werden rot eingefärbt.
+Sobald ein Resultat vorliegt, kann das Ergebnis mit einem Slider in der Seitenleiste weiter angepasst werden. Dabei wird durch den Benutzer ein Grenzwert ausgewählt. Alle Code-Blöcke welche diesen Grenzwert überschreiten, werden als Plagiat erachtet und in der Darstellung entsprechend rot eingefärbt.
 
-Desweiteren können die beiden Dateien vertauscht werden, links über der Heatmap befindet sich eine Checkbox, durch aus- bzw. abwählen werden sie dabei vertauscht.
+Desweiteren können die beiden Dateien vertauscht werden, links über der Heatmap befindet sich eine Checkbox, durch Aus- bzw. Abwählen werden sie dabei vertauscht.
+
+Als zusätzliches Verfahren steht noch der ***Winnowing Algorithmus*** zur Verfügung. Dessen Resultat kann durch Klicken auf den Infotext *Similarity using Winnowing Algorithm* eingeblendet werden. 
 
 ---
 
