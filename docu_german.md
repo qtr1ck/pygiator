@@ -69,7 +69,7 @@ categories = {
 Kommentare und Leerzeilen spielen bei der Ähnlichkeitsanalyse keine Rolle und werden entsprechend ignoriert.  
 Nachdem die Tokenstrings für die beiden Skripte vorliegen, efolgt der Vergleich dieser über zwei verschiedene Methoden.
 
-### Methode 1: Blockweiser Vergleich über Difflib 
+#### Methode 1: Blockweiser Vergleich über Difflib 
 ---
 Da die Programmiersprache Python große Freiheit bei der Anordnung von Programmblöcken lässt, ist es sinnvoll einen blockweisen Vergleich durchzuführen. Jeder Block eines Codes A wird dabei mit allen Blöcken eines Codes B abgeglichen. Es wird dabei immer nur die größte gefundene Ähnlichkeit als Resultat für den aktuellen Block übernommen. Für den Vergleich wird der ***SequenceMatcher*** aus dem Modul ***difflib*** verwendet. Dieser verwendet die Levenshtein Distanz zur Berechnung der Ähnlichkeit zweier Strings und gibt diese als Wert zwischen 0 und 1 zurück.  
   
@@ -87,7 +87,7 @@ Für die Implementierung wurde das Paper [Winnowing: local algorithms for docume
 
 #### Backend
 
-Für die Logik wurden unter anderem die beiden Klassen *Block* und *Code* erstellt. Die Erstere wird dabei genutzt um die Bestandteile eines Code-Blockes in Form von Tokens zu repräsentieren. Außerdem kann die Ähnlichkeit, welcher beim Vergleich mit einem anderen *Block* Objekt festgestellt wurde, in jeder Block-Instanz festgehalten werden.  
+Für die Logik wurden unter anderem die beiden Klassen *Block* und *Code* erstellt. Die Erstere wird dabei genutzt um die Bestandteile eines Code-Blockes in Form von Tokens zu repräsentieren. Außerdem kann die Ähnlichkeit, welche beim Vergleich mit einem anderen *Block* Objekt festgestellt wurde, in jeder Block-Instanz festgehalten werden.  
 
 Die Klasse *Code* sorgt dafür, dass ein beliebiges Skript in Form von einzelnen Blöcken abgespeichert wird. Außerdem bietet sie weitere Funktionalitäten und Methoden, wie in etwa jene um die Ähnlichkeit zweier *Code* Objekte zu erhalten. Dabei gibt es einmal die Möglichkeit diese blockweise zu ermitteln, oder über alle Blöckke hinweg mittels Winnowing Algorithmus.
 
