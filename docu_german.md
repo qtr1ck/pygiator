@@ -41,7 +41,8 @@ Als zusätzliches Verfahren steht noch der ***Winnowing Algorithmus*** zur Verf�
 
 ### Lösungsidee
 
-Da der Quellcode an sich schwer zu analysieren ist, muss dieser aufbereitetet werden, in diesem Fall bietet es sich gut an den Code in Tokens umzuwandeln. Dabei wird die Bedeutung der einzelnen Blöcke des Quellcodes bestimmt und in einer Zeichenkette von Tokens gespeichert. Es gibt folgende Kategorien für die Tokens:
+Da der Quellcode an sich schwer zu analysieren ist, muss dieser aufbereitetet werden, in diesem Fall bietet es sich an, den Code in Tokens umzuwandeln. Der Code wird
+dabei in seine Bestandteile zerlegt, indem jedes *Wort* einer der folgenden Kategorien zugeordnet wird:
 
 ```bash
 categories = {
@@ -65,15 +66,32 @@ categories = {
 }
 ```
 
-Nachdem die Tokenstrings für die beiden Skripte vorliegen, efolgt der Vergleich dieser. Dabei wird zeilenweise die Gleichheit überprüft und es wird immer eine Zeile des ersten Skripts mit jenen des zweiten überprüft, letztendlich zählt nur die größte Ähnlichkeit einer Zeile und die Anderen werden verworfen. Für den Vergleich wird der ***SequenceMatcher*** aus dem Modul ***difflib*** verwendet, welcher einen Wert zwischen 0 und 1 zurückgibt, abhängig von der Ähnlichkeit der beiden Sequenzen.
+Kommentare und Leerzeilen spielen bei der Ähnlichkeitsanalyse keine Rolle und werden entsprechend ignoriert.  
+Nachdem die Tokenstrings für die beiden Skripte vorliegen, efolgt der Vergleich dieser über zwei verschiedene Methoden.
+
+### Methode 1: Blockweiser Vergleich über Difflib 
+---
+Da die Programmiersprache Python große Freiheit bei der Anordnung von Programmblöcken lässt, ist es sinnvoll einen blockweisen Vergleich durchzuführen. Jeder Block eines Codes A wird dabei mit allen Blöcken eines Codes B abgeglichen. Es wird dabei immer nur die größte gefundene Ähnlichkeit als Resultat für den aktuellen Block übernommen. Für den Vergleich wird der ***SequenceMatcher*** aus dem Modul ***difflib*** verwendet. Dieser verwendet die Levenshtein Distanz zur Berechnung der Ähnlichkeit zweier Strings und gibt diese als Wert zwischen 0 und 1 zurück.  
+  
+Die Ähnlichkeit für den gesamten Code ergibt sich aus:  
+(Gesamtlänge der als Plagiat erachteten Blöcke) / (Blocklängen Total)
+
+### Methode 2: Vergleich unter Nutzung des Winnowing Algorithmus
+---
+Durch die Kombination eines Hashing-Verfahrens, sowie eines Sliding-Windows wird ein Fingerabdruck für einen gesamten Source-Code erstellt. Dabei wird der bereits vorverarbeitete Code verwendet. Der Fingerabdruck eines Dokuments besteht aus einem Set von Hashwerten. Um die Ähnlichkeit zweier Source-Codes zu erhalten, kann der Jaccard-Koeffizient herangezogen werden.  
+  
+Jaccard-Koeffizient:  
+![Formel Jaccard-Koeffizient](./misc/jaccard.svg)
+  
+Für die Implementierung wurde das Paper [Winnowing: local algorithms for document fingerprinting](https://theory.stanford.edu/~aiken/publications/papers/sigmod03.pdf) herangezogen.
 
 ### Backend
 
-Für die Logik wurden unter anderem die beiden Klassen *Block* und *Code* erstellt. Die Erstere wird dabei genutzt um Zeilen des vorgelegten Pythonskripts in Tokens zu repräsentieren. Außerdem gibt es eine weitere Eigenschaft welche gespeichert wird, und zwar die Ähnlichkeit welche festgestellt wurde beim Vergleich mit einem anderen *Block* Objekt.
+Für die Logik wurden unter anderem die beiden Klassen *Block* und *Code* erstellt. Die Erstere wird dabei genutzt um die Bestandteile eines Code-Blockes in Form von Tokens zu repräsentieren. Außerdem kann die Ähnlichkeit, welcher beim Vergleich mit einem anderen *Block* Objekt festgestellt wurde, in jeder Block-Instanz festgehalten werden.  
 
-Die Klasse *Code* sorgt dafür das ein beliebiges Skript in Form von den einzelnen Blöcken abgespeichert wird. Außerdem bietet sie weitere Funktionalitäten und Methoden, wie in etwa jene um die Ähnlichkeit zwei solcher *Code* Objekte zu erhalten. Dabei gibt es einmal die Möglichkeit diese klassisch zu ermitteln oder mit dem Winnowing Algorithmus.
+Die Klasse *Code* sorgt dafür, dass ein beliebiges Skript in Form von einzelnen Blöcken abgespeichert wird. Außerdem bietet sie weitere Funktionalitäten und Methoden, wie in etwa jene um die Ähnlichkeit zweier *Code* Objekte zu erhalten. Dabei gibt es einmal die Möglichkeit diese blockweise zu ermitteln, oder über alle Blöckke hinweg mittels Winnowing Algorithmus.
 
-Desweiteren wurde für die Heatmap auch eine Klasse erstellt, diese verarbeitet zwei *Code* Objekte und bildet die Tokens in unterschiedlichen Farben ab. Zudem kann auch ein Grenzwert übergeben werden, mit welchem die Abbildung des ersten *Code* Objekts angepasst wird. Dabei werden jene Zeilen wo die Ähnlichkeit den Grenzwert überschreitet mit einem roten Filter dargestellt.
+Desweiteren wurde für die Heatmap auch eine Klasse erstellt. Diese verarbeitet zwei *Code* Objekte und bildet die Tokens in unterschiedlichen Farben ab. Zudem kann man auch einen Grenzwert übergeben, mit welchem die Abbildung des ersten *Code* Objekts angepasst wird. Dabei werden jene Blöcke in welchen die Ähnlichkeit den Grenzwert überschreitet, mit roter Farbe überlagert dargestellt.
 
 Klassendiagramme:
 
