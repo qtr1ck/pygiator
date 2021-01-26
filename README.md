@@ -35,10 +35,6 @@ When the app is running you can select two python files in the sidebar. The firs
 
 In addition to the numerical result, a visual result is also displayed as a heatmap. On the left side you can see the blocks of the first file and on the right the blocks of the second file. In the sidebar you can find a slider where the similarity threshold can be changed, lines that are more similar are colored red.
 
-### Swap Files
-
-The selected files can be swapped at anytime by clicking the checkbox in the top left.
-  
 
 ## Winnowing Similarity
 

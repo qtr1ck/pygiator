@@ -31,7 +31,6 @@ In der Seitenleiste befinden sich zwei Felder. Durch einen Klick auf diese öffn
 
 Sobald ein Resultat vorliegt, kann das Ergebnis mit einem Slider in der Seitenleiste weiter angepasst werden. Dabei wird durch den Benutzer ein Grenzwert ausgewählt. Alle Code-Blöcke welche diesen Grenzwert überschreiten, werden als Plagiat erachtet und in der Darstellung entsprechend rot eingefärbt.
 
-Desweiteren können die beiden Dateien vertauscht werden, links über der Heatmap befindet sich eine Checkbox, durch Aus- bzw. Abwählen werden sie dabei vertauscht.
 
 Als zusätzliches Verfahren steht noch der ***Winnowing Algorithmus*** zur Verfügung. Dessen Resultat kann durch Klicken auf den Infotext *Similarity using Winnowing Algorithm* eingeblendet werden. 
 
@@ -95,7 +94,6 @@ Desweiteren wurde für die Heatmap auch eine Klasse erstellt. Diese verarbeitet 
 
 Klassendiagramme:
 
-TODO: erstellen und einfügen
 
 ### Frontend
 

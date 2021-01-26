@@ -5,7 +5,7 @@ from src.similarity import Code
 from src.plot import CodePlot
 
 # renders the logo, so it can be printed 
-@st.cache  
+@st.cache
 def renderSvg(svg):
     b64 = base64.b64encode(svg.encode('utf-8')).decode('utf-8')
     html = r'<img id="pygiatorLogo" src="data:image/svg+xml;base64,%s"/>' % b64
@@ -25,7 +25,8 @@ def winnowing(c1, c2):
 # outputs the heatmaps
 def printResult(c1, c2):
     c1.similarity_threshold = st.sidebar.slider('Select similarity threshold', 1, 100, 90) / 100
-    st.write('Similarity: **{:.0f}%**'.format(c1.similarity(c2) * 100))
+    st.write('**{:.0f}%** of \'*{}*\' are considered as plagiarism'.format(c1.getSimScore() * 100, c1.name))
+    st.write('**{:.0f}%** of \'*{}*\' are considered as plagiarism'.format(c2.getSimScore() * 100, c2.name))
 
     # creates the plot 
     p = CodePlot(c1, c2, c1.similarity_threshold) 
@@ -45,6 +46,8 @@ def computeCode(f1, f2):
 
     c1 = Code(fileOne, f1.name)
     c2 = Code(fileTwo, f2.name)
+    c1.calculate_similarity(c2) # Calculate similarity
+    
     return c1, c2 
 
 def blankLine():
@@ -93,9 +96,7 @@ def run_app():
     if 0 not in [c1, c2]: 
         winnowing(c1, c2)
         blankLine()
-        # Show similarity using custom algorithm and pyplot for visualization
-        if st.checkbox('Swap Files'):
-            c1, c2 = c2, c1
+
         printResult(c1, c2)
 
     else: # home page is printed if no files selected
