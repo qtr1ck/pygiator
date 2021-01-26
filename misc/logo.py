@@ -14,7 +14,7 @@ def displayMessage(message, fontSize ,color ,x ,y ,t ,charSpace):
             for dot in letter:
                 t.goto(x + dot[0]*fontSize, y + dot[1]*fontSize)
                 t.pendown()
-        # character 'I' takes less space
+        # character 'I' takes up less space
         if character == 'I': 
             x += fontSize / 2
         else: 
@@ -56,9 +56,10 @@ def logo():
     fontSize = 58
     displayMessage("PYGIATOR", fontSize, 'red', -230, -(fontSize/2), t, charSpace)
 
-    # saves logo
+    ## The following code snippet can be used to save the logo 
     # ts = t.getscreen()
     # ts.getcanvas().postscript(file="./misc/logo.svg")
+
     t.Screen().exitonclick()
 
 logo()
