@@ -178,26 +178,27 @@ class Code:
         return data
 
 
-    # Set all blocks status to uncompared
-    def _setUncompared(self):
+    # Set back all block similarities to zero
+    def resetSimilarity(self):
         for block in self.blocks:
-            block.compared = False
+            block.similarity = 0
 
 
     # Find exact matches using stringcompare and annotate
     def __pre_process(self, other):
         other_blocks = other.blocks
         for block_a in self.blocks:
-            for j,block_b in enumerate(other_blocks):
+            for block_b in other_blocks:
                 if block_a.similarity == 1:
                     break
                 if block_a.clnstr() == block_b.clnstr():
                     block_a.similarity = 1.0
+                    block_b.similarity = 1.0
 
     def __process_similarity(self, other):
         for block_a in self.blocks:
-            # Only compare if block does not totally match already
-            if block_a.similarity < 1:
+            # Only was not compared already
+            if block_a.similarity == 0:
                 best_score = 0 # Remember the best matching score
                 for block_b in other.blocks:
                     if len(block_a) > self._lvs_blocksize:
@@ -206,25 +207,33 @@ class Code:
                         score = block_a.compare_str(block_b)
 
                     # Set best score if found a better match
-                    if score > best_score:
+                    if score >= best_score:
                         best_score = score
+
+                        # Set the best similarity score for code b as well
+                        if block_b.similarity < best_score:
+                            block_b.similarity = best_score
+
                 block_a.similarity = best_score
 
+    # Calculate similarity scores for each block (primary calculation method)
+    def calculate_similarity(self, other):
+        self.resetSimilarity()              # Reset block similarity scores of this code
+        other.resetSimilarity()             # Reset block similarity scores of other code
+        self.__pre_process(other)           # Do preprocessing step finding exact string matches
+        self.__process_similarity(other)    # Compare remaining blocks using levensthein distance on token categories
+        other.__process_similarity(self)
+
     # Calculate total result -> similarity score
-    def __calculateSimScore(self):
+    def getSimScore(self):
         total_len = 0
         len_plagiat = 0
         for block in self.blocks:
             total_len += len(block)
-            if (block.similarity > self._similarity_threshold):
+            if (block.similarity >= self._similarity_threshold):
                 len_plagiat += len(block) * block.similarity
         return len_plagiat/total_len
 
-    # Return similarity (primary calculation method for similarity score)
-    def similarity(self, other):
-        self.__pre_process(other)           # Do preprocessing step finding exact string matches
-        self.__process_similarity(other)    # Compare remaining blocks using levensthein distance on token categories
-        return round(self.__calculateSimScore(), 2)
 
     # Return winnowing similarity (a second calculation method for similarity score)
     def winnowing_similarity(self, other, size_k = 5, window_size = 4):

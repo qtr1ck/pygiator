@@ -36,6 +36,7 @@ class CodePlot():
         filename_b = self._code_b.name
         data_a = self._code_a.get_ctg_array()
         data_a_sim = self._code_a.get_sim_array()
+        data_b_sim = self._code_b.get_sim_array()
         data_b = self._code_b.get_ctg_array()
         labels_a = self._code_a.get_clnstr_array()
         labels_b = self._code_b.get_clnstr_array()
@@ -54,7 +55,11 @@ class CodePlot():
         trace_a_sim = go.Heatmap(z=data_a_sim, visible=True, showscale=False, zmax=1.0, zmin=0.0,
                         colorscale=self.__overlay_cmap(), opacity=0.6, hovertemplate='Similarity: %{z}\'<extra></extra>')
 
-        return[trace_a, trace_b, trace_a_sim]
+        # similarity heatmap, serves as filteror the heatmap of code_b
+        trace_b_sim = go.Heatmap(z=data_b_sim, visible=True, showscale=False, zmax=1.0, zmin=0.0,
+                        colorscale=self.__overlay_cmap(), opacity=0.6, hovertemplate='Similarity: %{z}\'<extra></extra>')
+
+        return[trace_a, trace_b, trace_a_sim, trace_b_sim]
 
 
     def __make_subplots(self):
@@ -64,9 +69,10 @@ class CodePlot():
         self._fig = make_subplots(rows=1, cols=2, subplot_titles=[self._code_a.name, self._code_b.name])
 
         # Append all heatmaps to according subplots
-        self._fig.append_trace(traces[0], 1, 1)
-        self._fig.append_trace(traces[1], 1, 2)
-        self._fig.append_trace(traces[2], 1, 1)
+        self._fig.append_trace(traces[0], 1, 1) # Trace: Code_A
+        self._fig.append_trace(traces[1], 1, 2) # Trace: Code_B
+        self._fig.append_trace(traces[2], 1, 1) # Trace: SimOverlay A
+        self._fig.append_trace(traces[3], 1, 2) # Trace: SimOverlay B
 
 
     def __update_layout(self):
@@ -90,15 +96,17 @@ class CodePlot():
                                 updatemenus=[
                                     dict(
                                         type="buttons",
-                                        buttons=list([
-                                            dict(label="Show similarity overlay",
-                                                method="restyle",
-                                                args=[{"opacity": 0.6}, [2]]),
-                                            dict(label="Hide similarity overlay",
-                                                method="restyle",
-                                                args=[{"opacity": 0.0}, [2]]),
-                                        ]),
+                                        active=0,
                                         showactive=True,
+                                        buttons=list([
+                                            dict(label="Show similar blocks",
+                                                method="restyle",
+                                                args=[{"opacity": 0.6}, [2,3]]),
+                                            dict(label="Hide similar blocks",
+                                                method="restyle",
+                                                args=[{"opacity": 0.0}, [2,3]]),
+                                        ]),
+                                        
                                     )
                                 ])
 

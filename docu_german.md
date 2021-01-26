@@ -113,4 +113,3 @@ Der Pygiator ist dabei in drei Bereiche unterteilt:
 + Ergebnisseite
 
 Sobald zwei Dateien ausgewählt sind, wird die Ergebnisseite angezeigt. Dort befindet sich ganz oben ein Dropdown Menü für den **Winnowing** Algorithmus, in ausgeklappten Zustand kann man dort die Parameter dafür anpassen und sieht auch das Ergebnis davon.
-Darunter folgen die Checkbox für das vertauschen der Dateien und das eigentliche Ergebnis mit der Heatmap.
