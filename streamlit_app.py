@@ -26,12 +26,14 @@ def winnowing(c1, c2):
 
 # outputs the heatmaps
 def printResult(c1, c2):
-    c1.similarity_threshold = st.sidebar.slider('Select similarity threshold', 1, 100, 90) / 100
+    threshold = st.sidebar.slider('Select similarity threshold', 1, 100, 90) / 100
+    c1.similarity_threshold = threshold
+    c2.similarity_threshold = threshold
     st.write('**{:.0f}%** of \'*{}*\' are considered as plagiarism'.format(c1.getSimScore() * 100, c1.name))
     st.write('**{:.0f}%** of \'*{}*\' are considered as plagiarism'.format(c2.getSimScore() * 100, c2.name))
 
     # creates the plot 
-    p = CodePlot(c1, c2, c1.similarity_threshold) 
+    p = CodePlot(c1, c2, threshold) 
     st.plotly_chart(p.fig, use_container_width=True)
 
 @st.cache(allow_output_mutation=True, suppress_st_warning=True)
