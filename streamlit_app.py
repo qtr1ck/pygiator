@@ -11,7 +11,7 @@ def renderSvg(svg):
     html = r'<img id="pygiatorLogo" src="data:image/svg+xml;base64,%s"/>' % b64
     return html
 
-# Shows similarity using winnowing algorithm
+# shows similarity using winnowing algorithm
 def winnowing(c1, c2):
     winnowing_expander = st.beta_expander('Similarity using Winnowing Algorithm')
     with winnowing_expander:
