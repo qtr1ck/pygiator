@@ -45,7 +45,7 @@ def computeCode(f1, f2):
     fileTwo = f2.read().decode(errors='ignore')
 
     if len(fileOne) == 0 or len(fileTwo) == 0:
-        st.error('ERROR: a file is empty')
+        st.error('ERROR: file is empty')
         return 0,0
 
     c1 = Code(fileOne, f1.name)
